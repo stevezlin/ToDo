@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
+import { BrowserRouter as Router, Route} from 'react-router-dom';
 import Todos from './components/Todos';
 import Header from './components/layout/Header';
 import AddTodo from './components/AddTodo';
+import About from './components/pages/About';
+
 
 import './App.css';
 
@@ -47,23 +50,49 @@ class App extends Component {
     this.setState({ todos: [...this.state.todos.filter(todo => todo.id
       !==id)] });
   }
+
+  // Add Todo
+  addTodo =(title) => {
+    const newTodo = {
+      id: 4,
+      title,
+      completed: false
+    }
+    this.setState({ todos: [...this.state.todos, newTodo] });
+  }
   
   render() {
     //assigning variable to property
  
 
     return (
+      
+    <Router>
+
     <div className="App">
     <div className="container">
     <Header/>
-    <AddTodo/>
+    
+    <Route exact path="/" render={props => (
+  //Single Route index page of Todos/AddTodo
+
+    <React.Fragment>
+    
+    <AddTodo addTodo={this.addTodo} />
+
     <Todos todos={this.state.todos}
      taskComplete={this.taskComplete}
      delTodo={this.delTodo} />
-    
-    
+   </React.Fragment>
+    )}/>
+
+
+   <Route path="/about" component={About}/>
+
     </div>
     </div>
+      
+    </Router>
     );
   }
 }
